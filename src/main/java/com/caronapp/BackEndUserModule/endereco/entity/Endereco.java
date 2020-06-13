@@ -1,5 +1,7 @@
 package com.caronapp.BackEndUserModule.endereco.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -13,8 +15,13 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="endereco")
-public class Endereco {
+public class Endereco implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8493874657038384647L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -29,7 +36,7 @@ public class Endereco {
 	
 	private Integer numero;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="id_cidade")
 	private Cidade cidade;
 

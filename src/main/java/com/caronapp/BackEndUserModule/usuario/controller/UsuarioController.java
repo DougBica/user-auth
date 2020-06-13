@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.caronapp.BackEndUserModule.autenticacao.entity.Login;
 import com.caronapp.BackEndUserModule.usuario.entity.Usuario;
 import com.caronapp.BackEndUserModule.usuario.service.UsuarioService;
 
@@ -21,6 +22,11 @@ public class UsuarioController {
 	@PostMapping(path = "/public/usuario")
 	public Usuario createUsuario(@Valid @RequestBody Usuario usuario) {
 		return usuarioService.createUsuario(usuario);
+	}
+	
+	@PostMapping(path = "/public/usuario/login")
+	public Usuario createUsuario(@RequestBody Login login) {
+		return usuarioService.login(login);
 	}
 	
 	

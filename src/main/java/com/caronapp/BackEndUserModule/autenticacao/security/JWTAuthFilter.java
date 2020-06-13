@@ -1,5 +1,11 @@
 package com.caronapp.BackEndUserModule.autenticacao.security;
 
+import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
+import static com.caronapp.BackEndUserModule.autenticacao.security.ConstantesSeguranca.EXPIRATION_TIME;
+import static com.caronapp.BackEndUserModule.autenticacao.security.ConstantesSeguranca.HEADER_STRING;
+import static com.caronapp.BackEndUserModule.autenticacao.security.ConstantesSeguranca.SECRET;
+import static com.caronapp.BackEndUserModule.autenticacao.security.ConstantesSeguranca.TOKEN_PREFIX;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,23 +20,19 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.auth0.jwt.JWT;
-import com.caronapp.BackEndUserModule.usuario.entity.Usuario;
+import com.caronapp.BackEndUserModule.autenticacao.entity.Login;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
-import static com.caronapp.BackEndUserModule.autenticacao.security.ConstantesSeguranca.EXPIRATION_TIME;
-import static com.caronapp.BackEndUserModule.autenticacao.security.ConstantesSeguranca.HEADER_STRING;
-import static com.caronapp.BackEndUserModule.autenticacao.security.ConstantesSeguranca.SECRET;
-import static com.caronapp.BackEndUserModule.autenticacao.security.ConstantesSeguranca.TOKEN_PREFIX;
-
-public class JWTAuthFilter extends UsernamePasswordAuthenticationFilter {
+public class JWTAuthFilter extends AbstractAuthenticationProcessingFilter {
 	private AuthenticationManager authenticationManager;
 	
 	
-	public JWTAuthFilter (AuthenticationManager authenticationManager) {
+	public JWTAuthFilter (String url, AuthenticationManager authenticationManager) {
+		super(new AntPathRequestMatcher(url));
 		this.authenticationManager = authenticationManager;
 	}
 	
@@ -39,8 +41,8 @@ public class JWTAuthFilter extends UsernamePasswordAuthenticationFilter {
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
 		try {
-			Usuario usu = new ObjectMapper().readValue(request.getInputStream(), Usuario.class);
-			return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(usu.getNome(), usu.getSenha(), new ArrayList<>()));
+			Login usu = new ObjectMapper().readValue(request.getInputStream(), Login.class);
+			return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(usu.getEmail(), usu.getSenha(), new ArrayList<>()));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

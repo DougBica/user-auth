@@ -8,6 +8,10 @@ import com.caronapp.BackEndUserModule.usuario.entity.Usuario;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
 
-	Usuario findByNome(String nome);
+	public Usuario findByNome(String nome);
+
+	public Usuario findByEmailAndSenha(String email, String senha);
+
+	public Usuario findByEmail(String email);
 
 }

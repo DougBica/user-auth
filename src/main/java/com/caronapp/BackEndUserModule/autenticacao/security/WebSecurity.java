@@ -1,7 +1,5 @@
 package com.caronapp.BackEndUserModule.autenticacao.security;
 
-import static com.caronapp.BackEndUserModule.autenticacao.security.ConstantesSeguranca.SIGN_UP_URL;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -10,12 +8,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.caronapp.BackEndUserModule.autenticacao.service.ServiceDetalhesUsuario;
 
+@SuppressWarnings("unused")
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter{
 	private ServiceDetalhesUsuario serviceDetalhesUsuario;
@@ -31,10 +31,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable().authorizeRequests()
-        .antMatchers(HttpMethod.POST, "/caronapp/public/*").permitAll()
+        .antMatchers(HttpMethod.POST, "/caronapp/public/usuario/login").permitAll()
         .anyRequest().authenticated()
         .and()
-        .addFilter(new JWTAuthFilter(authenticationManager()))
+        .addFilterBefore(new JWTAuthFilter("/caronapp/public/usuario/login",authenticationManager()), UsernamePasswordAuthenticationFilter.class)
         .addFilter(new JWTAuthorizationFilter(authenticationManager()))
         // this disables session creation on Spring Security
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

@@ -46,11 +46,11 @@ public class Usuario {
 	@CPF
 	private String inscricao; 
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_endereco")
 	private Endereco endereco;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_filial")
 	private Filial filial;
 	
@@ -58,7 +58,7 @@ public class Usuario {
 	@JoinColumn(name = "id_usuario")
 	private List<Telefone> telefones;
 	
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_acesso")
 	private List<Acesso> acessos;
 

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.caronapp.BackEndUserModule.autenticacao.entity.Login;
 import com.caronapp.BackEndUserModule.usuario.entity.Usuario;
 import com.caronapp.BackEndUserModule.usuario.repository.UsuarioRepository;
 
@@ -34,6 +35,10 @@ public class UsuarioService {
 	
 	public Usuario getUsuario(Long id) throws Exception {
 		return Optional.ofNullable(usuarioRepository.findById(id)).orElse(null).orElseThrow(() -> new Exception());
+	}
+
+	public Usuario login(Login login) {	
+		return Optional.ofNullable(usuarioRepository.findByEmailAndSenha(login.getEmail(), login.getSenha())).orElse(null);
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.caronapp.BackEndUserModule.endereco.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,8 +11,12 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="estado")
-public class Estado {
+public class Estado  implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1840634785064246429L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;	

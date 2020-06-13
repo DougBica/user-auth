@@ -2,6 +2,7 @@ package com.caronapp.BackEndUserModule.autenticacao.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,13 +28,13 @@ public class ServiceDetalhesUsuario implements UserDetailsService {
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Usuario usuario = usuarioRepository.findByNome(username);
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		Usuario usuario = Optional.ofNullable(usuarioRepository.findByEmail(email)).orElse(null);
 		
 		if(usuario == null) {
-			throw new UsernameNotFoundException(username);
+			throw new UsernameNotFoundException(email);
 		}
-		return new User(usuario.getNome(), usuario.getSenha(), carregaRoles(usuario.getAcessos()));
+		return new User(usuario.getEmail(), usuario.getSenha(), carregaRoles(usuario.getAcessos()));
 	}
 	
 	private List<GrantedAuthority> carregaRoles(List<Acesso> acessos){
