@@ -19,7 +19,7 @@ public class UsuarioController {
 	private UsuarioService usuarioService;
 	
 	@PostMapping(path = "/public/usuario")
-	public Usuario createUsuario(@RequestBody @Valid Usuario usuario) {
+	public Usuario createUsuario(@Valid @RequestBody Usuario usuario) {
 		return usuarioService.createUsuario(usuario);
 	}
 	
