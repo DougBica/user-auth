@@ -50,7 +50,6 @@ public class Usuario {
 	@JoinColumn(name = "id_endereco")
 	private Endereco endereco;
 	
-	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_filial")
 	private Filial filial;
