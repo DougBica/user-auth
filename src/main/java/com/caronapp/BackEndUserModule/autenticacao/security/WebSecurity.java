@@ -31,10 +31,11 @@ public class WebSecurity extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable().authorizeRequests()
-        .antMatchers(HttpMethod.POST, "/caronapp/public/usuario/login").permitAll()
+	//	.antMatchers("/caronapp/private/*").authenticated()
+        .antMatchers(HttpMethod.POST, "/login").permitAll()
         .anyRequest().authenticated()
         .and()
-        .addFilterBefore(new JWTAuthFilter("/caronapp/public/usuario/login",authenticationManager()), UsernamePasswordAuthenticationFilter.class)
+        .addFilterBefore(new JWTAuthFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class)
         .addFilter(new JWTAuthorizationFilter(authenticationManager()))
         // this disables session creation on Spring Security
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

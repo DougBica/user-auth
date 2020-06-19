@@ -19,12 +19,12 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioService usuarioService;
 	
-	@PostMapping(path = "/public/usuario")
+	@PostMapping(path = "/private/usuario")
 	public Usuario createUsuario(@Valid @RequestBody Usuario usuario) {
 		return usuarioService.createUsuario(usuario);
 	}
 	
-	@PostMapping(path = "/public/usuario/login")
+	@PostMapping(path = "/private/usuario/login")
 	public Usuario createUsuario(@RequestBody Login login) {
 		return usuarioService.login(login);
 	}

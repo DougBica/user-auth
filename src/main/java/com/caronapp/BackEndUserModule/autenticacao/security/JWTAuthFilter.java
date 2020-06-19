@@ -20,22 +20,33 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.auth0.jwt.JWT;
 import com.caronapp.BackEndUserModule.autenticacao.entity.Login;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class JWTAuthFilter extends AbstractAuthenticationProcessingFilter {
+public class JWTAuthFilter extends UsernamePasswordAuthenticationFilter {
+
 	private AuthenticationManager authenticationManager;
 	
 	
-	public JWTAuthFilter (String url, AuthenticationManager authenticationManager) {
-		super(new AntPathRequestMatcher(url));
+	public JWTAuthFilter (AuthenticationManager authenticationManager) {
 		this.authenticationManager = authenticationManager;
 	}
 	
+	
+//	@Autowired
+//	private ReactiveRedisTemplate<String, RedisDataObject> reactiveRedisTemplateString;
+//	 
+//	private ReactiveListOperations<String, RedisDataObject> reactiveListOps;
+//	private Integer counter = 1;
+ 
+//	private void setup() {
+//		//ApplicationContext context = new AnnotationConfigApplicationContext(RedisConfig.class);
+//		//reactiveRedisTemplateString = (ReactiveRedisTemplate<String, RedisDataObject>) context.getBean("reactiveRedisTemplateString");
+//		reactiveListOps = reactiveRedisTemplateString.opsForList();
+//	}
 	
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
@@ -55,7 +66,13 @@ public class JWTAuthFilter extends AbstractAuthenticationProcessingFilter {
                 .withSubject(((User) authResult.getPrincipal()).getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .sign(HMAC512(SECRET.getBytes()));
+//        setup();
+//        RedisDataObject rdo = new RedisDataObject(((User) authResult.getPrincipal()).getUsername(), token, authResult.getAuthorities().stream().collect(Collectors.toList()));
+//        //reactiveListOps.set(((User) authResult.getPrincipal()).getUsername(), counter++,rdo);
+//        reactiveListOps.set(rdo.getEmail(), counter, rdo);
+//        counter++;
         response.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
+        response.getWriter().println("token:" + token);
 	}
 	
 }
