@@ -9,6 +9,7 @@ import static com.caronapp.BackEndUserModule.autenticacao.security.ConstantesSeg
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -35,19 +36,6 @@ public class JWTAuthFilter extends UsernamePasswordAuthenticationFilter {
 		this.authenticationManager = authenticationManager;
 	}
 	
-	
-//	@Autowired
-//	private ReactiveRedisTemplate<String, RedisDataObject> reactiveRedisTemplateString;
-//	 
-//	private ReactiveListOperations<String, RedisDataObject> reactiveListOps;
-//	private Integer counter = 1;
- 
-//	private void setup() {
-//		//ApplicationContext context = new AnnotationConfigApplicationContext(RedisConfig.class);
-//		//reactiveRedisTemplateString = (ReactiveRedisTemplate<String, RedisDataObject>) context.getBean("reactiveRedisTemplateString");
-//		reactiveListOps = reactiveRedisTemplateString.opsForList();
-//	}
-	
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
@@ -64,13 +52,9 @@ public class JWTAuthFilter extends UsernamePasswordAuthenticationFilter {
 			Authentication authResult) throws IOException, ServletException {
         String token = JWT.create()
                 .withSubject(((User) authResult.getPrincipal()).getUsername())
+                .withArrayClaim("aut", authResult.getAuthorities().stream().map(aut -> aut.toString()).collect(Collectors.toList()).toArray(new String[authResult.getAuthorities().size()]))
                 .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .sign(HMAC512(SECRET.getBytes()));
-//        setup();
-//        RedisDataObject rdo = new RedisDataObject(((User) authResult.getPrincipal()).getUsername(), token, authResult.getAuthorities().stream().collect(Collectors.toList()));
-//        //reactiveListOps.set(((User) authResult.getPrincipal()).getUsername(), counter++,rdo);
-//        reactiveListOps.set(rdo.getEmail(), counter, rdo);
-//        counter++;
         response.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
         response.getWriter().println("token:" + token);
 	}
