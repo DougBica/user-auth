@@ -1,9 +1,14 @@
 package com.caronapp.BackEndUserModule.autenticacao.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Login {
+public class Login implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6731870853425936047L;
 	private String email;
 	private String nome;
 	private String senha;

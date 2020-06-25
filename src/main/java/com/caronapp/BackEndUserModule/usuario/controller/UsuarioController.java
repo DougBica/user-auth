@@ -30,5 +30,16 @@ public class UsuarioController {
 	}
 	
 	
+	@PostMapping(path = "/public/usuario/email")
+	public Usuario getUsuarioPorEmail(@RequestBody Login email) {
+		try {
+			return usuarioService.getUsuarioPorEmail(email.getEmail());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 
 }

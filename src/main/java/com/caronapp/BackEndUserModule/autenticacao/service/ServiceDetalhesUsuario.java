@@ -31,6 +31,7 @@ public class ServiceDetalhesUsuario implements UserDetailsService {
 		if(usuario == null) {
 			throw new UsernameNotFoundException(email);
 		}
+
 		return new User(usuario.getEmail(), usuario.getSenha(), carregaRoles(usuario.getAcessos()));
 	}
 	

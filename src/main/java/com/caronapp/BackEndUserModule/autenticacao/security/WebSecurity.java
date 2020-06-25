@@ -31,7 +31,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable().authorizeRequests()
-	//	.antMatchers("/caronapp/private/*").authenticated()
+		.antMatchers("/caronapp/public/**").permitAll()
         .antMatchers(HttpMethod.POST, "/login").permitAll()
         .anyRequest().authenticated()
         .and()

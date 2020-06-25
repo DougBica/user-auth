@@ -36,6 +36,10 @@ public class UsuarioService {
 	public Usuario getUsuario(Long id) throws Exception {
 		return Optional.ofNullable(usuarioRepository.findById(id)).orElse(null).orElseThrow(() -> new Exception());
 	}
+	
+	public Usuario getUsuarioPorEmail(String email) throws Exception {
+		return Optional.ofNullable(usuarioRepository.findByEmail(email)).orElse(null);
+	}
 
 	public Usuario login(Login login) {	
 		return Optional.ofNullable(usuarioRepository.findByEmailAndSenha(login.getEmail(), login.getSenha())).orElse(null);
